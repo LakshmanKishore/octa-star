@@ -1,16 +1,20 @@
-s = 'xabacbadefghg'
+# s = 'xabacbadefghg'
+s = 'xafcbbbdbcebaadfcgh'
 x = 7
+x = 10
 
 def isCycle(path):
     # print(path)
     # if len(path) < 3: return True
     diff = ord(path[0]) - ord(path[1])
+    # print("path: ", path, diff)
     if not diff in [-1, 1]:
         return False
     for i in range(1, len(path)-1):
-        if (diff == 1 and path[i] == ord("h") and path[i+1] == ord("a")) or \
-           (diff == -1 and path[i] == ord("a") and path[i+1] == ord("h")):
+        if (diff == 1 and path[i] == "a" and path[i+1] == "h") or \
+           (diff == -1 and path[i] == "h" and path[i+1] == "a"):
             continue
+        # print(diff)
         if not ord(path[i]) - ord(path[i+1]) == diff:
             return False
     return True
@@ -28,6 +32,27 @@ g = {
         10: [9, 11],
         11: [10, 12],
         12: [8, 9, 11]
+}
+
+g = {
+    1: [2, 5, 6],
+    2: [1, 3, 10],
+    3: [2, 4, 7, 8, 11],
+    4: [3, 8],
+    5: [1, 9, 16],
+    6: [1, 9],
+    7: [3, 10, 15],
+    8: [3, 4, 11, 12, 13],
+    9: [5, 6, 14],
+    10: [2, 7, 14, 15],
+    11: [3, 8, 13, 15],
+    12: [8, 13, 18],
+    13: [8, 11, 12, 17],
+    14: [9, 10, 15, 16],
+    15: [7, 10, 11, 14, 17],
+    16: [5, 14],
+    17: [13, 15, 18],
+    18: [12, 17]
 }
 
 
@@ -99,7 +124,7 @@ def dfs(x, p, fp):
         return fp + [p]
     return fp
 
-print(dfs(x, [x], []))
+# print(dfs(x, [x], []))
 
 
 paths = dfs(x, [x], [])
@@ -120,3 +145,6 @@ else:
     print("  No valid merged paths found")
 
 print("\n" + "="*60)
+
+
+# print(isCycle([i for i in "edcbahg"]))

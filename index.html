@@ -7,6 +7,43 @@
       content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
     />
     <title>Tic Tac Toe</title>
+    <script>
+      (function() {
+        const setupInterceptor = (doc) => {
+          if (doc.__octaStarInterceptorSet) return;
+          doc.__octaStarInterceptorSet = true;
+
+          doc.addEventListener('click', function(event) {
+            // Identify if the clicked element (or its parent) is the specific 'X' icon
+            const icon = event.target.closest('img[src*="M13.4099%2012L17.7099"]');
+
+            if (icon) {
+              const confirmed = confirm("Are you sure you want to close this?");
+
+              if (!confirmed) {
+                event.stopImmediatePropagation();
+                event.preventDefault();
+                console.log("Close action blocked.");
+              } else {
+                console.log("Close action allowed.");
+              }
+            }
+          }, { capture: true });
+        };
+
+        // Attach to current document
+        setupInterceptor(document);
+
+        // Try to attach to parent document if in an iframe (may be blocked by cross-origin policy)
+        try {
+          if (window.parent && window.parent !== window) {
+            setupInterceptor(window.parent.document);
+          }
+        } catch (e) {
+          // Cross-origin access likely blocked, which is expected in most sandboxed environments
+        }
+      })();
+    </script>
     <script id="rune-translation-data" type="application/json">
       {
         "en": {
@@ -30,7 +67,9 @@
   </head>
   <body>
     <main>
+      <div id="cycleContainer" class="cycle-container"></div>
       <div id="board" class="initial"></div>
+      <div id="cardsContainer" class="cards-container"></div>
       <ul id="playersSection"></ul>
     </main>
     <script type="module" src="/src/logic.ts"></script>
